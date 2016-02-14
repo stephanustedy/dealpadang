@@ -85,7 +85,7 @@ defined('EXIT__AUTO_MIN')      OR define('EXIT__AUTO_MIN', 9); // lowest automat
 defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest automatically-assigned error code
 
 
-/*Constants for General purpose*/
+//user
 define('USER_STATUS_PENDING', 0); // User register success, but not activated
 define('USER_STATUS_ACTIVE', 1); // User register success, but not activated
 
@@ -95,3 +95,15 @@ define('USER_API_TYPE_FACEBOOK', 1);
 //user role
 define('USER_ROLE_USER', 1);
 define('USER_ROLE_ADMIN', 2);
+
+//voucher
+define('VOUCHER_STATUS_UNPUBLISHED', 0);
+define('VOUCHER_STATUS_PUBLISHED', 1);
+
+//image
+define('IMAGE_STATUS_ACTIVE', 1);
+define('IMAGE_STATUS_DELETED', -1);
+define('IMAGE_STATUS_PRIMARY', 2);
+
+//address
+define('VOUCHER_ADDRESS_STATUS_ACTIVE', 1);

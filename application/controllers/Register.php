@@ -6,7 +6,15 @@ class Register extends CI_Controller {
 		$this->load->helper('form');
 		$this->load->helper('security');
 		$this->load->library('form_validation');
-		
+
+		if($this->input->server('REQUEST_METHOD') == "POST") {
+			$this->do_register();
+		}
+
+		$this->load->view('register/index');
+	}
+
+	private function do_register() {
 		$this->form_validation->set_rules('email', 'Email', 'required|valid_email|max_length[50]|callback_unique_email');
 		$this->form_validation->set_rules('full_name', 'Full Name', 'required|max_length[100]');
 		$this->form_validation->set_rules('birthdate', 'Birthdate', 'required');
@@ -20,8 +28,6 @@ class Register extends CI_Controller {
 		$full_name 		= xss_clean($this->input->post('full_name'));
 		$birthdate		= xss_clean($this->input->post('birthdate'));
 		$gender 		= xss_clean($this->input->post('gender'));
-
-		
 
 		if ($this->form_validation->run() == TRUE ) {
 			$password 			= do_hash($password, 'md5');
@@ -38,18 +44,16 @@ class Register extends CI_Controller {
 			   'role_id'			=> USER_ROLE_USER
 			);
 
-			$this->user->create($data);
+			$this->user_model->create($data);
 			$this->send_activation_email($email, $activation_code);
 			$this->load->view('register/success_register');
 
 			return;
 		}
-
-		$this->load->view('register/index');
 	}
 
 	function unique_email($email) {
-		$query = $this->user->get_by_email($email);
+		$query = $this->user_model->get_by_email($email);
 		if ($query) {
 			$this->form_validation->set_message('unique_email','Email not available');
 			return FALSE;
@@ -79,7 +83,6 @@ class Register extends CI_Controller {
 		$this->email->subject("Activation - Deal Padang");
 		$this->email->message("Welcome to dealpadang.<br/>To activate your account click <a href='". site_url('/register/activate?code=' . $activation_code . '&email=' . $email) ."'>this</a>");
 
-
 	    $this->email->send();
 	}
 
@@ -90,10 +93,10 @@ class Register extends CI_Controller {
 		$email 				= xss_clean($this->input->get('email'));
 
 		if($activation_code != "" && $email != "") {
-			$query = $this->user->validate_activate($email, $activation_code);
+			$query = $this->user_model->validate_activate($email, $activation_code);
 
 			if ($query) {
-				$this->user->activate($email);
+				$this->user_model->activate($email);
 				$this->load->view('register/activation_success');
 				return;
 			}
@@ -110,11 +113,11 @@ class Register extends CI_Controller {
 	}
 
 	public function set_password_email() {
-		if(!$this->user->is_logged_in()) {
+		if(!$this->user_model->is_logged_in()) {
 			redirect (base_url() . 'login', 'refresh');
 		}
 
-		if($this->user->is_valid_session()) {
+		if($this->user_model->is_valid_session()) {
 			redirect (base_url() . 'home', 'refresh');
 		}
 
@@ -122,11 +125,21 @@ class Register extends CI_Controller {
 		$this->load->helper('security');
 		$this->load->library('form_validation');
 
+		$logged_in 		= $this->user_model->is_logged_in();
 		
+		if($this->input->server('REQUEST_METHOD') == "POST") {
+			$this->do_set_password_email($logged_in);
+		}
+
+		$data['email'] = isset($logged_in['email']) ? $logged_in['email'] : '';
+
+		$this->load->view('register/set_password_email_prompt', $data);
+	}
+
+	private function do_set_password_email($logged_in) {
 		$this->form_validation->set_rules("password","Password",'required|matches[c_password]|max_length[100]');
 		$this->form_validation->set_rules("c_password","Confirm Password",'required');
-
-		$logged_in 		= $this->user->is_logged_in();
+		
 
 		if(!$logged_in['email']){
 			$this->form_validation->set_rules('email', 'Email', 'required|valid_email|max_length[50]|callback_unique_email');
@@ -142,16 +155,12 @@ class Register extends CI_Controller {
 			
 			$email = isset($email) ? $email : $logged_in['email'];
 
-			$this->user->update($data, $logged_in['user_id']);
-			$this->user->login($logged_in['user_id'], $email, $password);
+			$this->user_model->update($data, $logged_in['user_id']);
+			$this->user_model->login($logged_in['user_id'], $email, $password);
 
 			redirect (base_url() . 'home', 'refresh');
 			return;
 		}
-
-		$data['email'] = isset($logged_in['email']) ? $logged_in['email'] : '';
-
-		$this->load->view('register/set_password_email_prompt', $data);
 	}
 
 }
