@@ -27,7 +27,7 @@ class People extends CI_Controller {
     	$user 	= $this->user_model->get_user();
 
     	$config = array(
-			'upload_path' => APPPATH . "images/user",
+			'upload_path' => FCPATH . "images/user",
 			'allowed_types' => "jpg|png|jpeg",
 			'overwrite' => FALSE,
 			"encrypt_name" => TRUE

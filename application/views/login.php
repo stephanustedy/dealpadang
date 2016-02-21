@@ -1,91 +1,81 @@
-<?php
-defined('BASEPATH') OR exit('No direct script access allowed');
-?><!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="utf-8">
-	<title>Welcome to CodeIgniter</title>
+<div class="content-wrap">
 
-	<style type="text/css">
+	<div class="container clearfix">
 
-	::selection { background-color: #E13300; color: white; }
-	::-moz-selection { background-color: #E13300; color: white; }
+		<div class="col_one_third nobottommargin">
 
-	body {
-		background-color: #fff;
-		margin: 40px;
-		font: 13px/20px normal Helvetica, Arial, sans-serif;
-		color: #4F5155;
-	}
+			<div class="well well-lg nobottommargin">
+				<?= isset($error_login) ?  $error_login : '';?>
+				<form id="login-form" name="login-form" class="nobottommargin" action="<?php echo site_url('login');?>" method="post">
 
-	a {
-		color: #003399;
-		background-color: transparent;
-		font-weight: normal;
-	}
+					<h3>Login Member</h3>
 
-	h1 {
-		color: #444;
-		background-color: transparent;
-		border-bottom: 1px solid #D0D0D0;
-		font-size: 19px;
-		font-weight: normal;
-		margin: 0 0 14px 0;
-		padding: 14px 15px 10px 15px;
-	}
+					<div class="col_full">
+						<label for="login-form-username">Email:</label>
+						<input type="text" id="login-form-username" name="email" value="<?php echo set_value('email'); ?>" class="form-control" />
+					</div>
 
-	code {
-		font-family: Consolas, Monaco, Courier New, Courier, monospace;
-		font-size: 12px;
-		background-color: #f9f9f9;
-		border: 1px solid #D0D0D0;
-		color: #002166;
-		display: block;
-		margin: 14px 0 14px 0;
-		padding: 12px 10px 12px 10px;
-	}
+					<div class="col_full">
+						<label for="login-form-password">Password:</label>
+						<input type="password" id="login-form-password" name="password" value="" class="form-control" />
+					</div>
 
-	#body {
-		margin: 0 15px 0 15px;
-	}
+					<div class="col_full nobottommargin">
+						<button class="button button-3d nomargin" id="login-form-submit" name="login-form-submit" value="login">Login</button>
+						<a href="#" class="fright">Lupa Password?</a>
+					</div>
 
-	p.footer {
-		text-align: right;
-		font-size: 11px;
-		border-top: 1px solid #D0D0D0;
-		line-height: 32px;
-		padding: 0 10px 0 10px;
-		margin: 20px 0 0 0;
-	}
+				</form>
+			</div>
 
-	#container {
-		margin: 10px;
-		border: 1px solid #D0D0D0;
-		box-shadow: 0 0 8px #D0D0D0;
-	}
-	</style>
-</head>
-<body>
+		</div>
 
-<div id="container">
-	<?php 
-	echo validation_errors();
+		<div class="col_two_third col_last nobottommargin">
+			<h3>Register Member (Free)</h3>
 
-	if (isset($error_message)) {
-		echo $error_message;
-	} 
-	?>
-	<form method="post" action="<?php echo site_url('login');?>">
-		<input type="text" name="email"  placeholder="email" value="<?php echo set_value('email'); ?>"><br/>
-		<input type="password" name="password"  placeholder="password"/><br/>
+			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Unde, vel odio non dicta provident sint ex autem mollitia dolorem illum repellat ipsum aliquid illo similique sapiente fugiat minus ratione.</p>
+			<?= isset($error_register) ?  $error_register : '';?>
+			<form id="register-form" name="register-form" class="nobottommargin" action="<?php echo base_url() . 'register';?>" method="post">
 
-		<button type="submit">Submit</button>
+				<div class="col_half">
+					<label for="register-form-name">Nama Lengkap:</label>
+					<input type="text" id="register-form-name" name="full_name" value="<?php echo set_value('full_name'); ?>" class="form-control" />
+				</div>
 
-	</form>
+				<div class="col_half col_last">
+					<label for="register-form-email">Email:</label>
+					<input type="text" id="register-form-email" name="email_regis" value="<?php echo set_value('email_regis'); ?>" class="form-control" />
+				</div>
 
-	Login Facebook via Oauth 2.0</h2>
-	<?php echo "<a href='$login_url'><img class='fb' src=".base_url()."images/fb.png"."></a>"; ?>
+				<div class="clear"></div>
+
+				<div class="col_half col_last">
+					<label for="register-form-phone">Nomor Telepon:</label>
+					<input type="text" id="register-form-phone" name="phone_number" value="<?php echo set_value('phone_number'); ?>" class="form-control" />
+				</div>
+
+				<div class="clear"></div>
+
+				<div class="col_half">
+					<label for="register-form-password">Password:</label>
+					<input type="password" id="register-form-password" name="password" value="" class="form-control" />
+				</div>
+
+				<div class="col_half col_last">
+					<label for="register-form-repassword">Ulangi Password:</label>
+					<input type="password" id="register-form-repassword" name="c_password" value="" class="form-control" />
+				</div>
+
+				<div class="clear"></div>
+
+				<div class="col_full nobottommargin">
+					<button class="button button-3d button-black nomargin" id="register-form-submit" name="register-form-submit" value="register">Register</button>
+				</div>
+
+			</form>
+
+		</div>
+
+	</div>
+
 </div>
-
-</body>
-</html>

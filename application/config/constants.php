@@ -107,3 +107,12 @@ define('IMAGE_STATUS_PRIMARY', 2);
 
 //address
 define('VOUCHER_ADDRESS_STATUS_ACTIVE', 1);
+
+//cart
+define('CART_STATUS_ACTIVE', 1);
+
+//order
+define('ORDER_STATUS_WAITING_PAYMENT', 10);
+
+//payment
+define('PAYMENT_STATUS_WAITING_VERIFICATION', 0);

@@ -11,23 +11,21 @@ class Register extends CI_Controller {
 			$this->do_register();
 		}
 
-		$this->load->view('register/index');
+		render('login', '', '');
 	}
 
 	private function do_register() {
-		$this->form_validation->set_rules('email', 'Email', 'required|valid_email|max_length[50]|callback_unique_email');
+		$this->form_validation->set_rules('email_regis', 'Email', 'required|valid_email|max_length[50]|callback_unique_email');
 		$this->form_validation->set_rules('full_name', 'Full Name', 'required|max_length[100]');
-		$this->form_validation->set_rules('birthdate', 'Birthdate', 'required');
-		$this->form_validation->set_rules('gender', 'Gender', 'required');
+		$this->form_validation->set_rules('phone_number', 'Phone Number', 'required|is_natural');
 		$this->form_validation->set_rules("password","Password",'required|matches[c_password]|max_length[100]');
 		$this->form_validation->set_rules("c_password","Confirm Password",'required');
 
-		$email 			= xss_clean($this->input->post('email'));
+		$email 			= xss_clean($this->input->post('email_regis'));
 		$password 		= xss_clean($this->input->post('password'));
 		$c_password 	= xss_clean($this->input->post('c_password'));
 		$full_name 		= xss_clean($this->input->post('full_name'));
-		$birthdate		= xss_clean($this->input->post('birthdate'));
-		$gender 		= xss_clean($this->input->post('gender'));
+		$phone_number		= xss_clean($this->input->post('phone_number'));
 
 		if ($this->form_validation->run() == TRUE ) {
 			$password 			= do_hash($password, 'md5');
@@ -37,8 +35,7 @@ class Register extends CI_Controller {
 			   'email' 				=> $email,
 			   'password' 			=> $password,
 			   'full_name' 			=> $full_name,
-			   'birthdate'			=> $birthdate,
-			   'gender'				=> $gender,
+			   'phone_number'		=> $phone_number,
 			   'status'				=> USER_STATUS_PENDING,
 			   'activation_code' 	=> $activation_code,
 			   'role_id'			=> USER_ROLE_USER
@@ -46,7 +43,8 @@ class Register extends CI_Controller {
 
 			$this->user_model->create($data);
 			$this->send_activation_email($email, $activation_code);
-			$this->load->view('register/success_register');
+
+			render('register/success_register', '', '');
 
 			return;
 		}
@@ -97,12 +95,12 @@ class Register extends CI_Controller {
 
 			if ($query) {
 				$this->user_model->activate($email);
-				$this->load->view('register/activation_success');
+				render('register/activation_success', '', '');
 				return;
 			}
 		}
 		
-		$this->load->view('register/activation_failed');
+		render('register/activation_failed', '', '');
 	}
 
 	private function generate_activation_code($email) {
@@ -133,7 +131,7 @@ class Register extends CI_Controller {
 
 		$data['email'] = isset($logged_in['email']) ? $logged_in['email'] : '';
 
-		$this->load->view('register/set_password_email_prompt', $data);
+		render('register/set_password_email_prompt', $data, '');
 	}
 
 	private function do_set_password_email($logged_in) {

@@ -29,10 +29,10 @@ class Login extends CI_Controller {
 		}
 
 		if($this->input->server('REQUEST_METHOD') == "POST") {
-			$this->do_login();
+			$data['error_login'] = $this->do_login();
 		}
-		
-		$this->load->view('login', $data);
+
+		render('login', $data, '');
 
 	}
 
@@ -50,11 +50,12 @@ class Login extends CI_Controller {
 				$this->user_model->login($user->user_id, $user->email, $user->password);
 
 				redirect (base_url() . 'home', 'refresh');
-				return TRUE;
+				return;
 			} else {
-				$this->form_validation->set_message('incorrect','Email or Password Incorrect');
-				$data['error_message'] = 'Invalid Username or Password';
+				return 'Email or Password Incorrect';
 			}
+		} else {
+			return validation_errors();
 		}
 	}
 
@@ -84,7 +85,6 @@ class Login extends CI_Controller {
 			} else{
 				//register user data
 				$user_data['full_name'] = $fb_object['data']['name'];
-				$user_data['birthdate'] = $fb_object['data']['birthday'];
 				$user_data['gender'] 	= $fb_object['data']['gender'];
 				$user_data['email'] 	= $fb_object['data']['email'];
 				$user_data['status'] 	= USER_STATUS_PENDING;

@@ -39,7 +39,7 @@ class User_model extends CI_Model {
     }
 
     function get_by_email($email) {
-        $this->db->select('user_id, email, password, gender, birthdate, full_name');
+        $this->db->select('user_id, email, password, gender, phone_number, full_name');
         $this->db->from('user');
         $this->db->where('email', $email); 
 
@@ -151,17 +151,23 @@ class User_model extends CI_Model {
             $rs     = $this->get_by_email($email);
             
             if($rs) {
-                $data['user_id']    = $rs->user_id;
-                $data['full_name']  = $rs->full_name;
-                $data['birthday']   = $rs->birthdate;
-                $data['gender']     = $rs->gender;
-                $data['email']      = $rs->email;
+                $data['user_id']        = $rs->user_id;
+                $data['full_name']      = $rs->full_name;
+                $data['phone_number']   = $rs->phone_number;
+                $data['gender']         = $rs->gender;
+                $data['email']          = $rs->email;
 
                 return $data;
             }
         }
 
         return $data;
+    }
+
+    function user_id() {
+        $sess = $this->session->userdata("logged_in");
+        
+        return $sess['user_id'];
     }
 
 
