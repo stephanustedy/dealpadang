@@ -1,4 +1,3 @@
-
 <div class="content-wrap">
 
 	<div class="container clearfix">
@@ -29,7 +28,7 @@
 								</td>
 
 								<td class="cart-product-price">
-									Rp <span id="price" class="amount"><?=$detail['price']?></span>
+									<span id="price" class="amount"><?=$detail['price_fmt']?></span>
 								</td>
 
 								<td class="cart-product-quantity">
@@ -67,24 +66,6 @@
 
 					<table class="table cart">
 						<tbody>
-							<!-- <tr class="cart_item">
-								<td class="cart-product-name">
-									<strong>Subtotal</strong>
-								</td>
-
-								<td class="cart-product-name">
-									<span id="sub" class="amount"></span>
-								</td>
-							</tr>
-							<tr class="cart_item">
-								<td class="cart-product-name">
-									<strong>Kode Unik</strong>
-								</td>
-
-								<td class="cart-product-name">
-									<span class="amount">17</span>
-								</td>
-							</tr> -->
 							<tr class="cart_item">
 								<td class="cart-product-name">
 									<strong>Total</strong>

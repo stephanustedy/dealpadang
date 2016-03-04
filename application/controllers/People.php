@@ -2,20 +2,13 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class People extends CI_Controller {
-	public function  __construct()
-    {
-        parent::__construct();
-
-    	if($this->user_model->is_logged_in()) {
-    		if(!$this->user_model->is_valid_session()){
-	    		redirect (base_url() . 'register/set_password_email', 'refresh');
-	    	}
-	    } else {
-	    	redirect (base_url() . 'login', 'refresh');
-	    }
-    }
+	public function  __construct() {
+	        parent::__construct();
+	}
 
     public function profile() {
+    	must_authenticated(site_url('people/profile'), USER_ROLE_USER);
+    
     	$this->load->library('form_validation');
 
     	$user = $this->user_model->get_user();
@@ -24,6 +17,8 @@ class People extends CI_Controller {
     }
 
     public function upload_profpic() {
+    	must_authenticated(site_url('people/profile'), USER_ROLE_USER);
+    
     	$user 	= $this->user_model->get_user();
 
     	$config = array(

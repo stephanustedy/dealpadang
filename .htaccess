@@ -1,6 +1,19 @@
-<IfModule mod_rewrite.c>
-    RewriteEngine on
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule ^(.*)$ index.php/$1 [L,QSA]
-</IfModule>
+#production
+#DirectoryIndex index.php
+
+#RewriteEngine on
+#RewriteBase /
+#RewriteCond %{REQUEST_FILENAME} !-f
+#RewriteCond %{REQUEST_FILENAME} !-d
+#RewriteCond $1 !^(index\.php|robots\.txt)
+
+#RewriteRule ^(.*)$ index.php?/$1 [L]
+
+
+
+#dev
+RewriteEngine on
+RewriteCond $1 !^(index\.php|resources|robots\.txt)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php/$1 [L,QSA] 

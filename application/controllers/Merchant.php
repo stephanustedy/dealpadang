@@ -3,13 +3,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Merchant extends CI_Controller {
     public function add() {
-		$this->load->helper('form');
-		$this->load->helper('security');
-		$this->load->library('form_validation');
+    	must_authenticated(site_url('merchant/add'), USER_ROLE_ADMIN);
+    	
+    	$this->load->helper('form');
+	$this->load->helper('security');
+	$this->load->library('form_validation');
 
-		if($this->input->server('REQUEST_METHOD') == "POST") {
-			$this->do_add_merchant();
-		}
+	if($this->input->server('REQUEST_METHOD') == "POST") {
+		$this->do_add_merchant();
+	}
 
     	render('merchant/add', '', '');
     }

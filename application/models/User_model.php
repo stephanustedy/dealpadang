@@ -102,6 +102,7 @@ class User_model extends CI_Model {
 
     function is_logged_in() {
         $logged_in = $this->session->userdata("logged_in");
+        
         return $logged_in;
     }
 

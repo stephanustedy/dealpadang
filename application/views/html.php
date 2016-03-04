@@ -15,6 +15,16 @@
 	<link rel="stylesheet" href="<?= base_url('assets/css/animate.css'); ?>" type="text/css" />
 	<link rel="stylesheet" href="<?= base_url('assets/css/magnific-popup.css'); ?>" type="text/css" />
 
+	<?php 
+		if(isset($append_css)){
+			foreach($append_css as $k => $v) {
+			?>
+				<link rel="stylesheet" href="<?= $v ?>" type="text/css" />
+			<?php
+			}
+		}
+	?>
+
 	<link rel="stylesheet" href="<?= base_url('assets/css/responsive.css'); ?>" type="text/css" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<!--[if lt IE 9]>
@@ -25,7 +35,7 @@
 	============================================= -->
 	<script type="text/javascript" src="<?= base_url('assets/scripts/jquery.js'); ?>"></script>
 	<script type="text/javascript" src="<?= base_url('assets/scripts/plugins.js'); ?>"></script>
-	<script type="text/javascript" src="<?= base_url('assets/scripts/functions.js'); ?>"></script>
+	
 
 
 	<!-- Document Title
@@ -57,7 +67,13 @@
 					============================================= -->
 					<div class="top-links">
 						<ul>
-							<li><a href="<?=base_url('login');?>" style="color:white;">Login &nbsp;/&nbsp; Register</a></li>
+							<li>
+								<?php if(isset($login_url)){ ?>
+									<a href="<?=$login_url?>" style="color:white;">Login &nbsp;/&nbsp; Register</a>
+								<?php } else if(isset($logout_url)){ ?>
+									<a href="<?=$logout_url?>" style="color:white;">Logout</a>
+									<?php  }?>
+							</li>
 						</ul>
 					</div><!-- .top-links end -->
 
@@ -89,98 +105,19 @@
 					<nav id="primary-menu">
 
 						<ul>
-							<li class="current"><a href="scratch.html"><div>Semua Deal</div></a></li>
-							<!-- Mega Menu
-							============================================= -->
-							<li class="mega-menu"><a href="#"><div>Voucher Makan</div></a>
-								<div class="mega-menu-content style-2 col-4 clearfix">
-									<ul>
-										<li class="mega-menu-title"><a href="#"><div>Footwear</div></a>
-											<ul>
-												<li><a href="#"><div>Casual Shoes</div></a></li>
-												<li><a href="#"><div>Formal Shoes</div></a></li>
-												<li><a href="#"><div>Sports shoes</div></a></li>
-												<li><a href="#"><div>Flip Flops</div></a></li>
-												<li><a href="#"><div>Slippers</div></a></li>
-												<li><a href="#"><div>Sports Sandals</div></a></li>
-												<li><a href="#"><div>Party Shoes</div></a></li>
-											</ul>
-										</li>
-									</ul>
-									<ul>
-										<li class="mega-menu-title"><a href="#"><div>Clothing</div></a>
-											<ul>
-												<li><a href="#"><div>Casual Shirts</div></a></li>
-												<li><a href="#"><div>T-Shirts</div></a></li>
-												<li><a href="#"><div>Collared Tees</div></a></li>
-												<li><a href="#"><div>Pants / Trousers</div></a></li>
-												<li><a href="#"><div>Ethnic Wear</div></a></li>
-												<li><a href="#"><div>Jeans</div></a></li>
-												<li><a href="#"><div>Sweamwear</div></a></li>
-											</ul>
-										</li>
-									</ul>
-									<ul>
-										<li class="mega-menu-title"><a href="#"><div>Accessories</div></a>
-											<ul>
-												<li><a href="#"><div>Bags &amp; Backpacks</div></a></li>
-												<li><a href="#"><div>Watches</div></a></li>
-												<li><a href="#"><div>Sunglasses</div></a></li>
-												<li><a href="#"><div>Wallets</div></a></li>
-												<li><a href="#"><div>Caps &amp; Hats</div></a></li>
-												<li><a href="#"><div>Jewellery</div></a></li>
-												<li><a href="#"><div>Belts, Ties</div></a></li>
-											</ul>
-										</li>
-									</ul>
-									<ul>
-										<li class="mega-menu-title"><a href="#"><div>New Arrivals</div></a>
-											<ul>
-												<li><a href="#"><div>T-Shirts</div></a></li>
-												<li><a href="#"><div>Formal Shoes</div></a></li>
-												<li><a href="#"><div>Accessories</div></a></li>
-												<li><a href="#"><div>Watches</div></a></li>
-												<li><a href="#"><div>Perfumes</div></a></li>
-												<li><a href="#"><div>Belts, Ties</div></a></li>
-												<li><a href="#"><div>Formal Shirts</div></a></li>
-											</ul>
-										</li>
-									</ul>
-								</div>
-							</li><!-- .mega-menu end -->
-							<li><a href="#"><div>Voucher</div></a>
-								<div class="mega-menu-content style-2 col-2 clearfix">
-									<ul>
-										<li class="mega-menu-title"><a href="#"><div>Footwear</div></a>
-											<ul>
-												<li><a href="#"><div>Casual Shoes</div></a></li>
-												<li><a href="#"><div>Formal Shoes</div></a></li>
-												<li><a href="#"><div>Sports shoes</div></a></li>
-												<li><a href="#"><div>Flip Flops</div></a></li>
-												<li><a href="#"><div>Slippers</div></a></li>
-												<li><a href="#"><div>Sports Sandals</div></a></li>
-												<li><a href="#"><div>Party Shoes</div></a></li>
-											</ul>
-										</li>
-									</ul>
-									<ul>
-										<li class="mega-menu-title"><a href="#"><div>Clothing</div></a>
-											<ul>
-												<li><a href="#"><div>Casual Shirts</div></a></li>
-												<li><a href="#"><div>T-Shirts</div></a></li>
-												<li><a href="#"><div>Collared Tees</div></a></li>
-												<li><a href="#"><div>Pants / Trousers</div></a></li>
-												<li><a href="#"><div>Ethnic Wear</div></a></li>
-												<li><a href="#"><div>Jeans</div></a></li>
-												<li><a href="#"><div>Sweamwear</div></a></li>
-											</ul>
-										</li>
-									</ul>
-								</div>
-							</li><!-- .mega-menu end -->
-							<li><a href="#"><div>Produk</div></a></li>
-							<li><a href="#"><div>FAQ</div></a></li>
-							<li><a href="#"><div>Mitra Deal</div></a></li>
+							<li <?=base_url(uri_string()) == site_url('')? 'class="current"' : ''?>><a href="<?=site_url('')?>"><div>Semua Deal</div></a></li>
+							<li <?=base_url(uri_string()) == site_url('voucher/browse/restaurant')? 'class="current"' : ''?>>
+								<a href="<?=site_url('voucher/browse/restaurant')?>"><div>Voucher Makan</div></a>
+							</li>
+							<li <?=base_url(uri_string()) == site_url('voucher/browse/product')? 'class="current"' : ''?>>
+								<a href="<?=site_url('voucher/browse/product')?>"><div>Produk</div></a>
+							</li>
+							<li>
+								<a href="#"><div>FAQ</div></a>
+							</li>
+							<li>
+								<a href="#"><div>Mitra Deal</div></a>
+							</li>
 						</ul>
 
 					
@@ -189,7 +126,7 @@
 						============================================= -->
 						<div id="top-search">
 							<a href="#" id="top-search-trigger"><i class="icon-search3"></i><i class="icon-line-cross"></i></a>
-							<form action="search.html" method="get">
+							<form action="<?=site_url('voucher/search')?>" method="get">
 								<input type="text" name="q" class="form-control" value="" placeholder="Cari Promo &amp; Tekan Enter..">
 							</form>
 						</div><!-- #top-search end -->
@@ -391,6 +328,60 @@
 
 	<!-- Footer Scripts
 	============================================= -->
+        <script type="text/javascript" src="<?= base_url('assets/scripts/functions.js'); ?>"></script>
+        
+        <script type="text/javascript">
+
+		function calculate(obj){
+
+			var sum = 0;
+            var price = parseFloat($(obj).parent().parent().parent().find('.amount').text()) || 0;
+            var quantity = parseInt($(obj).parent().find('.qty').val());
+            var total = price * quantity;
+           
+            $(obj).parent().parent().parent().find('.total_amount').text(total);
+
+            // total
+            $('.total_amount').each(function() {
+                sum += Number($(this).html());
+            }); 
+
+            $('#sum').html(sum);
+        }
+
+        function changeQuantity(num,obj){
+            var value_to_set = parseInt($(obj).parent().find('.qty').val())+num;
+            if(value_to_set<=0){$(obj).parent().find('.qty').val(0);return;}
+            $(obj).parent().find('.qty').val( value_to_set);
+        }
+
+        $().ready(function(){
+            $(".minus").click(function(obj){
+	            changeQuantity(-1,this);
+            	calculate(this);
+            });
+
+            $(".plus").click(function(){
+                changeQuantity(1,this);
+                calculate(this);
+            });
+
+			$(".qty").keyup(function(e){
+				if (e.keyCode == 38) changeQuantity(1,this);
+            		if (e.keyCode == 40) changeQuantity(-1,this);
+            		calculate(this);
+            });
+
+        });
+
+        function minmax(value, min, max) 
+		{
+		    if(parseInt(value) < min || isNaN(value)) 
+		        return 0; 
+		    else return value;
+		}
+
+	</script>
 	
 </body>
 </html>

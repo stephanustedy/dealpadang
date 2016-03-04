@@ -1,6 +1,5 @@
-
 <div class="container clearfix">
-	<h1><?=$title?></h1>
+	<h1><?=$voucher['title']?></h1>
 	<ol class="breadcrumb">
 		<li><a href="#">Home</a></li>
 		<li><a href="#">Shop</a></li>
@@ -25,11 +24,11 @@
 							<div class="flexslider">
 								<div class="slider-wrap" data-lightbox="gallery">
 									<?php
-										foreach($images as $image){
+										foreach($voucher['images'] as $image){
 									?>
-										<div class="slide" data-thumb="<?=site_url('images/voucher/' . $image['image_url'])?>">
-											<a href="" title="<?=$title?>" data-lightbox="gallery-item">
-												<img src="<?=site_url('images/voucher/' . $image['image_url'])?>" alt="<?=$title?>">
+										<div class="slide" data-thumb="<?=site_url('images/voucher/' . $image['image_url']);?>">
+											<a href="" title="<?=$voucher['title']?>" data-lightbox="gallery-item">
+												<img src="<?=site_url('images/voucher/' . $image['image_url']);?>" alt="<?=$voucher['title']?>">
 											</a>
 										</div>
 									<?php
@@ -38,8 +37,8 @@
 								</div>
 							</div>
 						</div>
-						<div class="sale-flash">50% Off*</div>
-						<div class="stock-flash">Sold 78</div>
+						<div class="sale-flash"><?=$voucher['discount']?>% Off*</div>
+						<div class="stock-flash">Sold <?=$voucher['sold']?></div>
 					</div><!-- Product Single - Gallery End -->
 
 					<!-- Product Single - Meta
@@ -49,7 +48,7 @@
 							<h3 class="panel-title">Merchant</h3>
 						</div>
 						<?php
-							foreach($details as $detail){
+							foreach($voucher['details'] as $detail){
 						?>
 							<div class="panel-body">
 								<ul class="iconlist nobottommargin">
@@ -101,7 +100,7 @@
 
 					<!-- Product Single - Price
 					============================================= -->
-					<div class="product-price"><del><?=$details[0]['normal_price_fmt']?></del> <ins><?=$details[0]['price_fmt']?></ins></div><!-- Product Single - Price End -->
+					<div class="product-price"><del><?=$voucher['display_normal_price_fmt']?></del> <ins><?=$voucher['display_price_fmt']?></ins></div><!-- Product Single - Price End -->
 
 					<div class="clear"></div>
 					<div class="line"></div>
@@ -109,7 +108,7 @@
 					<!-- Product Single - Quantity & Cart Button
 					============================================= -->
 					<form class="cart nobottommargin clearfix" method="get" action="<?=site_url('tx/order_confirmation')?>">
-						<input type="hidden" name="id" value="<?=$voucher_id?>" />
+						<input type="hidden" name="id" value="<?=$voucher['voucher_id']?>" />
 						<button type="submit" class="add-to-cart button nomargin">BELI</button>
 					</form><!-- Product Single - Quantity & Cart Button End -->
 
@@ -118,48 +117,9 @@
 
 					<!-- Product Single - Short Description
 					============================================= -->
-					<p><?=$description?></p>
+					<p><?=$voucher['description']?></p>
 
-					<!-- Google Maps
-					============================================= -->
-
-					<section id="google-map" class="gmap" style="height: 290px;"></section>
-
-						<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
-						<script type="text/javascript" src="js/jquery.gmap.js"></script>
-
-						<script type="text/javascript">
-
-							jQuery('#google-map').gMap({
-
-								address: 'Melbourne, Australia',
-								maptype: 'ROADMAP',
-								zoom: 14,
-								markers: [
-									{
-										address: "Melbourne, Australia",
-										html: '<div style="width: 300px;"><h4 style="margin-bottom: 8px;">Hi, we\'re <span>Envato</span></h4><p class="nobottommargin">Our mission is to help people to <strong>earn</strong> and to <strong>learn</strong> online. We operate <strong>marketplaces</strong> where hundreds of thousands of people buy and sell digital goods every day, and a network of educational blogs where millions learn <strong>creative skills</strong>.</p></div>',
-										icon: {
-											image: "images/map-icon-red.png",
-											iconsize: [32, 39],
-											iconanchor: [32,39]
-										}
-									}
-								],
-								doubleclickzoom: false,
-								controls: {
-									panControl: true,
-									zoomControl: true,
-									mapTypeControl: true,
-									scaleControl: false,
-									streetViewControl: false,
-									overviewMapControl: false
-								}
-
-							});
-
-						</script> <!-- End Google Maps -->
-
+					
 				</div> <!-- col_two_fifth product-desc -->
 
 				<div class="col_one_fifth col_last">
@@ -215,15 +175,15 @@
 						<div class="tab-container">
 
 							<div class="tab-content clearfix" id="tabs-1">
-								<p><?=$info?></p>
+								<p><?=$voucher['info']?></p>
 							</div><!-- Promo info tab end -->
 
 							<div class="tab-content clearfix" id="tabs-2">
-								<?=$highlight?>
+								<?=$voucher['highlight']?>
 							</div> <!-- Highlights tab end -->
 
 							<div class="tab-content clearfix" id="tabs-3">
-								<?=$voucher_condition?>
+								<?=$voucher['voucher_condition']?>
 							</div> <!-- Conditions tab end -->
 
 						</div> <!-- Tab container end -->
@@ -237,88 +197,45 @@
 		</div>
 
 		<div class="clear"></div><div class="line"></div>
-
+<?php
+if($other_voucher){
+?>
 		<div class="col_full nobottommargin">
 
 			<div class="fancy-title title-border-color">
 				<h3><span>Deal Lainnya</span></h3>
 			</div>	
-
+	
+			<?php
+				foreach($other_voucher as $k => $v){
+			?>
 			<div class="col-md-3 bottommargin-lg">
 				<div class="feature-box center media-box fbox-bg">
 					<div class="fbox-media">
-						<img src="images/1.jpg" alt="Image">
+						<img src="<?=$v['image_url']?>" alt="Image">
 					</div>
-					<div class="sale-flash">50% Off*</div>
-					<div class="stock-flash">Sold 78</div>
+					<div class="sale-flash"><?=$v['discount']?>% Off*</div>
+					<div class="stock-flash">Sold <?=$v['sold']?></div>
 					<div class="fbox-desc">
 						<h3>Men's Footwear<span class="subtitle">
 							<div class="product-price">
-								<del>$24.99</del> <ins>$12.49</ins>
+								<del><?=$v['normal_price_fmt']?></del> <ins><?=$v['price_fmt']?></ins>
 							</div>
 							</span>
 						</h3>
-						<p><a href="detail-product.html" class="btn btn-default">Detail</a></p>
+						<p><a href="<?=site_url('voucher/detail/' . $v['voucher_id'])?>" class="btn btn-default">Detail</a></p>
 					</div>
 				</div>
 			</div>
+			<?php
+				}
+			?>
 
-			<div class="col-md-3 bottommargin-lg">
-				<div class="feature-box center media-box fbox-bg">
-					<div class="fbox-media">
-						<img src="images/1.jpg" alt="Image">
-					</div>
-					<div class="stock-flash">Sold 36</div>
-					<div class="fbox-desc">
-						<h3>Men's Footwear<span class="subtitle">
-							<div class="product-price">$39.99</div>
-							</span>
-						</h3>
-						<p><a href="detail-product.html" class="btn btn-default">Detail</a></p>
-					</div>
-				</div>
-			</div>
-
-			<div class="col-md-3 bottommargin-lg">
-				<div class="feature-box center media-box fbox-bg">
-					<div class="fbox-media">
-						<img src="images/1.jpg" alt="Image">
-					</div>
-					<div class="sale-flash">50% Off*</div>
-					<div class="stock-flash">Sold 98</div>
-					<div class="fbox-desc">
-						<h3>Men's Footwear<span class="subtitle">
-							<div class="product-price">
-								<del>$24.99</del> <ins>$12.49</ins>
-							</div>
-							</span>
-						</h3>
-						<p><a href="detail-product.html" class="btn btn-default">Detail</a></p>
-					</div>
-				</div>
-			</div>
-
-			<div class="col-md-3 bottommargin-lg">
-				<div class="feature-box center media-box fbox-bg">
-					<div class="fbox-media">
-						<img src="images/1.jpg" alt="Image">
-					</div>
-					<div class="sale-flash">50% Off*</div>
-					<div class="stock-flash">Sold 98</div>
-					<div class="fbox-desc">
-						<h3>Men's Footwear<span class="subtitle">
-							<div class="product-price">
-								<del>$24.99</del> <ins>$12.49</ins>
-							</div>
-							</span>
-						</h3>
-						<p><a href="detail-product.html" class="btn btn-default">Detail</a></p>
-					</div>
-				</div>
-			</div>
 
 		</div> <!-- End voucher Deal Terbaru -->
 
 	</div>
-
+<?php
+}
+?>
 </div>

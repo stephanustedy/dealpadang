@@ -95,6 +95,7 @@ define('USER_API_TYPE_FACEBOOK', 1);
 //user role
 define('USER_ROLE_USER', 1);
 define('USER_ROLE_ADMIN', 2);
+define('USER_ROLE_MERCHANT', 3);
 
 //voucher
 define('VOUCHER_STATUS_UNPUBLISHED', 0);
@@ -113,6 +114,10 @@ define('CART_STATUS_ACTIVE', 1);
 
 //order
 define('ORDER_STATUS_WAITING_PAYMENT', 10);
+define('ORDER_STATUS_FINISH', 700);
 
 //payment
 define('PAYMENT_STATUS_WAITING_VERIFICATION', 0);
+
+//voucher search
+define('VOUCHER_SORT_NEWEST', 1);

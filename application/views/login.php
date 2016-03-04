@@ -9,7 +9,13 @@
 				<form id="login-form" name="login-form" class="nobottommargin" action="<?php echo site_url('login');?>" method="post">
 
 					<h3>Login Member</h3>
-
+					<?php
+						if(isset($refback)){
+					?>
+							<input type="hidden" name="refback" value="<?=$refback?>" />
+					<?php
+						}
+					?>
 					<div class="col_full">
 						<label for="login-form-username">Email:</label>
 						<input type="text" id="login-form-username" name="email" value="<?php echo set_value('email'); ?>" class="form-control" />

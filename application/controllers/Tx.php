@@ -3,16 +3,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Tx extends CI_Controller {
 	function __construct() {
-        // Call the Model constructor
-        parent::__construct();
-		if(!$this->user_model->is_logged_in()) {
-			redirect (base_url() . 'login', 'refresh');
-		}
-    }
+		// Call the Model constructor
+		parent::__construct();
+	}
 
 	public function order_confirmation() {
-		$this->load->helper('security');
-
+		must_authenticated(site_url('tx/order_confirmation') . "?id=" . $this->input->get('id'), USER_ROLE_USER);
+		
+		$this->load->helper('security');		
 		$voucher_id 	= xss_clean($this->input->get('id'));
 
 		if($voucher_id && isInteger($voucher_id)) {
@@ -31,6 +29,8 @@ class Tx extends CI_Controller {
 		$this->load->helper('security');
 
 		$order_id 	= xss_clean($this->input->get('id'));
+		
+		must_authenticated(site_url('tx/order_detail') . "?id=" . $order_id 	, USER_ROLE_USER);
 
 
 		if($order_id && isInteger($order_id)) {
@@ -47,6 +47,8 @@ class Tx extends CI_Controller {
 	}
 
 	public function checkout() {
+		must_authenticated('' , USER_ROLE_USER);
+		
 		$this->load->helper('security');
 
 		$this->load->model('voucher_model');
@@ -120,16 +122,17 @@ class Tx extends CI_Controller {
 					$this->tx_model->create_order_detail($order_detail);
 				}
 			}
-			redirect (base_url() . 'tx/order_detail?id=' . $order_id, 'refresh');
-
+			
+			redirect (site_url('tx/order_detail') . '?id=' . $order_id, 'refresh');
 		} else {
 			$this->session->set_flashdata("error", $err_message);
-			redirect (base_url() . 'tx/order_confirmation?id=' . $voucher_id, 'refresh');
+			redirect (site_url('tx/order_confirmation') . '?id=' . $voucher_id, 'refresh');
 		}
 
 	}
 
 	function payment_confirmation() {
+		must_authenticated('' , USER_ROLE_USER);
 		if($this->input->server('REQUEST_METHOD') == "POST") {
 			$this->load->helper('security');
 			$this->load->model('tx_model');
@@ -161,10 +164,10 @@ class Tx extends CI_Controller {
 
 					$this->tx_model->create_payment($data);
 
-					redirect (base_url() . 'tx/payment_success' , 'refresh');
+					redirect (site_url('tx/payment_success') , 'refresh');
 				} else {
 					$this->session->set_flashdata("error_payment", validation_errors());
-					redirect (base_url() . 'tx/order_detail?id=' . $order_id, 'refresh');
+					redirect (site('tx/order_detail') . '?id=' . $order_id, 'refresh');
 				}
 
 			}
@@ -175,11 +178,4 @@ class Tx extends CI_Controller {
 	function payment_success() {
 		render('order/payment_success', '', '');
 	}
-
 }
-
-
-
-
-
-

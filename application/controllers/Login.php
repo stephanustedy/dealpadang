@@ -2,18 +2,17 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Login extends CI_Controller {
-	public function  __construct()
-    {
-        parent::__construct();
+	public function  __construct() {
+	        parent::__construct();
 
-    	if($this->user_model->is_logged_in()) {
-    		if($this->user_model->is_valid_session()){
-	    		redirect (base_url() . 'home', 'refresh');
-	    	} else {
-	    		redirect (base_url() . 'register/set_password_email', 'refresh');
-	    	}
-	    }
-    }
+		if($this->user_model->is_logged_in()) {
+			if($this->user_model->is_valid_session()){
+				redirect (base_url() . 'home', 'refresh');
+			} else {
+				redirect (base_url() . 'register/set_password_email', 'refresh');
+			}
+		}
+    	}
 
 	public function index() {
 		$this->load->helper('form');
@@ -21,6 +20,8 @@ class Login extends CI_Controller {
 		$this->load->library('form_validation');
 		
 		$this->load->library('facebook');
+		
+		$data['refback'] = $this->input->get("refback");
 
 		if ($this->facebook->logged_in() && $this->facebook->user()) {
 			$this->do_fb_login();
@@ -42,6 +43,7 @@ class Login extends CI_Controller {
 
 		$email 			= xss_clean($this->input->post('email'));
 		$password 		= xss_clean($this->input->post('password'));
+		$refback 		= xss_clean($this->input->post('refback'));
 		
 		if ($this->form_validation->run() == TRUE) {
 
@@ -49,7 +51,11 @@ class Login extends CI_Controller {
 			if($user){
 				$this->user_model->login($user->user_id, $user->email, $user->password);
 
-				redirect (base_url() . 'home', 'refresh');
+				if($refback) {
+					redirect ($refback, 'refresh');
+				} else {
+					redirect (site_url('home'), 'refresh');
+				}
 				return;
 			} else {
 				return 'Email or Password Incorrect';
@@ -67,9 +73,9 @@ class Login extends CI_Controller {
 		if($check_user) {
 			$this->user_model->login($check_user->user_id, $check_user->email, $check_user->password);
 			if($check_user->user_id && $check_user->email && $check_user->password){
-				redirect (base_url() . 'home', 'refresh');
+				redirect (site_url('home'), 'refresh');
 			} else {
-				redirect (base_url() . 'register/set_password_email', 'refresh');
+				redirect (site_url('register/set_password_email'), 'refresh');
 			}
 			return;
 		} else {

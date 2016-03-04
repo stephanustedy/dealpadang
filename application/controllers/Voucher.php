@@ -2,26 +2,54 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Voucher extends CI_Controller {
+	function __construct() {
+		// Call the Model constructor
+		parent::__construct();
+		$this->load->model("voucher_model");
+	}
+
 	function detail($id) {
 		if($id) {
-			$this->load->model("voucher_model");
+			$params = array();
+			
+			$args = array();
+			$args['negative_id'] = $id;
+			
+			$params['voucher'] 		= $this->voucher_model->get_voucher($id);
+			$params['other_voucher'] 	= $this->voucher_model->search($args);
 
-			$data = $this->voucher_model->get_voucher($id);
-			if($data){
-				render("voucher/detail", $data, '');
+			if($params){
+				render("voucher/detail", $params, '');
 				return;
 			}			
 		}
 
 		return show_404();
 	}
+	
+	function browse($identifier) {
+		$category = $this->voucher_model->get_category_by_identifier($identifier);
+
+		if($category) {
+			$params = array();
+
+			$params['category_id'] 	= $category['category_id'];
+			$params['result'] 	= $this->voucher_model->search($params);
+	
+			render("voucher/search", $params, "");
+			
+			return;
+		}
+		
+		return show_404();
+	}
 
 	function add() {
+		must_authenticated(site_url('voucher/add'), USER_ROLE_ADMIN);
+	
 		$this->load->helper('form');
 		$this->load->helper('security');
 		$this->load->library('form_validation');
-
-		$this->load->model('voucher_model');
 
 		if($this->input->server('REQUEST_METHOD') == "POST") {
 			if($this->validate()) {
@@ -32,7 +60,7 @@ class Voucher extends CI_Controller {
 		render("voucher/add", '', '');
 	}
 
-	private function validate_create_voucher() {
+	private function validate_create_voucher() {	
 		$this->form_validation->set_rules('title', 'Title', 'required|max_length[100]');
 		$this->form_validation->set_rules('stock', 'Stock', 'required|is_natural_no_zero');
 		$this->form_validation->set_rules('price', 'Price', 'required|is_natural_no_zero');
@@ -124,10 +152,32 @@ class Voucher extends CI_Controller {
 		}
 	}
 
+	function print_voucher() {
+		must_authenticated(site_url('merchant/add'), USER_ROLE_USER);
+		
+		 if($this->input->server('REQUEST_METHOD') == "POST") {
+			$id  			= $this->input->get('voucher_detail_id');
+			$voucher_code  	= $this->input->get('voucher_code');
+			
+
+			$data['voucher'] = $this->voucher_model->print_voucher($id, $voucher_code);
+			if($data['voucher']){
+				$this->load->view('voucher/print', $data);
+				return;
+			}
+		}
+		show_404();
+	}
+
+	function search() {
+		$keyword 	= $this->input->get('q');
+
+		$params = array();
+
+		$params['keyword'] 	= $keyword;
+		$params['result'] 	= $this->voucher_model->search($params);
+
+		render("voucher/search", $params, "");
+	}
+
 }
-
-
-
-
-
-

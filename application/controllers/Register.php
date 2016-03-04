@@ -7,11 +7,13 @@ class Register extends CI_Controller {
 		$this->load->helper('security');
 		$this->load->library('form_validation');
 
+                $data = array();
+	 	//$this->send_activation_email('stephanus.tedy@gmail.com', 'aj1j314j');
 		if($this->input->server('REQUEST_METHOD') == "POST") {
-			$this->do_register();
+			$data['error_register'] = $this->do_register();
 		}
 
-		render('login', '', '');
+		render('login', $data, '');
 	}
 
 	private function do_register() {
@@ -23,7 +25,7 @@ class Register extends CI_Controller {
 
 		$email 			= xss_clean($this->input->post('email_regis'));
 		$password 		= xss_clean($this->input->post('password'));
-		$c_password 	= xss_clean($this->input->post('c_password'));
+		$c_password 	        = xss_clean($this->input->post('c_password'));
 		$full_name 		= xss_clean($this->input->post('full_name'));
 		$phone_number		= xss_clean($this->input->post('phone_number'));
 
@@ -32,12 +34,12 @@ class Register extends CI_Controller {
 			$activation_code 	= $this->generate_activation_code($email);
 
 			$data = array(
-			   'email' 				=> $email,
+			   'email' 			=> $email,
 			   'password' 			=> $password,
 			   'full_name' 			=> $full_name,
 			   'phone_number'		=> $phone_number,
-			   'status'				=> USER_STATUS_PENDING,
-			   'activation_code' 	=> $activation_code,
+			   'status'			=> USER_STATUS_PENDING,
+			   'activation_code' 		=> $activation_code,
 			   'role_id'			=> USER_ROLE_USER
 			);
 
@@ -47,6 +49,8 @@ class Register extends CI_Controller {
 			render('register/success_register', '', '');
 
 			return;
+		} else {
+			return validation_errors();
 		}
 	}
 
@@ -61,25 +65,14 @@ class Register extends CI_Controller {
 	}
 
 	function send_activation_email($email, $activation_code) {
-		$config = array();
+		$this->load->library('email');
+                $this->email->set_newline("\r\n");
 
-        $config['protocol'] = "smtp";
-		// does not have to be gmail
-		$config['smtp_host'] = 'ssl://smtp.gmail.com'; 
-		$config['smtp_port'] = '465';
-		$config['smtp_user'] = 'dealpadang@gmail.com';
-		$config['smtp_pass'] = 'dealpadang123';
-		$config['mailtype'] = 'html';
-		$config['charset'] = 'utf-8';
-		$config['newline'] = "\r\n";
-
-		$this->load->library('email', $config);
-		$this->email->initialize($config);
-		$this->email->from('dealpadang@gmail.com', 'Deal Padang');
+		$this->email->from('noreply@padangdeal.com', 'Deal Padang');
 		$this->email->to($email); 
 
 		$this->email->subject("Activation - Deal Padang");
-		$this->email->message("Welcome to dealpadang.<br/>To activate your account click <a href='". site_url('/register/activate?code=' . $activation_code . '&email=' . $email) ."'>this</a>");
+		$this->email->message("Registration success!<br/>Activate your account <a href='". site_url('register/activate') . "?code=". $activation_code ."&email=" . $email."'>here</a>.");
 
 	    $this->email->send();
 	}
